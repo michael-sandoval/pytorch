@@ -1,7 +1,7 @@
 set(PYTORCH_FOUND_HIP FALSE)
 
 if(NOT DEFINED ENV{ROCM_PATH})
-  set(ROCM_PATH /opt/rocm)
+  set(ROCM_PATH /opt/rocm-5.6.0)
 else()
   set(ROCM_PATH $ENV{ROCM_PATH})
 endif()
