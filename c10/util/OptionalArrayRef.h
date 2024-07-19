@@ -75,7 +75,7 @@ class OptionalArrayRef final {
 
   template <typename U, typename... Args>
   constexpr explicit OptionalArrayRef(
-      std::in_place_t ip,
+      in_place_t ip,
       std::initializer_list<U> il,
       Args&&... args)
       : wrapped_opt_array_ref(ip, il, std::forward<Args>(args)...) {}

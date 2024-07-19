@@ -11,7 +11,8 @@
 namespace c10 {
 // NOLINTNEXTLINE(misc-unused-using-decls)
 using std::bad_optional_access;
-// NOLINTNEXTLINE(misc-unused-using-decls)
+using std::in_place;
+using std::in_place_t;
 using std::make_optional;
 // NOLINTNEXTLINE(misc-unused-using-decls)
 using std::nullopt;
