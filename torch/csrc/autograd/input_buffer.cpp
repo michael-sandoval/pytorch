@@ -192,7 +192,6 @@ void InputBuffer::add(
         opt_sync_stream = opt_producer_stream;
       } else {
         // (5)
-        // NOLINTNEXTLINE(bugprone-unchecked-optional-access)
         opt_accumulate_stream = guard.getDefaultStream(*device_of(var));
       }
       if (opt_sync_stream && (opt_accumulate_stream != opt_sync_stream)) {

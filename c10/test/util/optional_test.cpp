@@ -7,8 +7,6 @@
 #include <cstdint>
 #include <string>
 
-#include <c10/util/ArrayRef.h>
-
 namespace {
 
 using testing::Eq;
@@ -58,6 +56,13 @@ using OptionalTypes = ::testing::Types<
     // Non-trivial destructor.
     std::string>;
 
+// This assert is also in Optional.cpp; including here too to make it
+// more likely that we'll remember to port this optimization over when
+// we move to std::optional.
+static_assert(
+    sizeof(c10::optional<c10::IntArrayRef>) == sizeof(c10::IntArrayRef),
+    "c10::optional<IntArrayRef> should be size-optimized");
+
 TYPED_TEST_SUITE(OptionalTest, OptionalTypes);
 
 TYPED_TEST(OptionalTest, Empty) {
@@ -66,7 +71,7 @@ TYPED_TEST(OptionalTest, Empty) {
   EXPECT_FALSE((bool)empty);
   EXPECT_FALSE(empty.has_value());
 
-  // NOLINTNEXTLINE(bugprone-unchecked-optional-access,hicpp-avoid-goto,cppcoreguidelines-avoid-goto)
+  // NOLINTNEXTLINE(hicpp-avoid-goto,cppcoreguidelines-avoid-goto)
   EXPECT_THROW(empty.value(), c10::bad_optional_access);
 }
 
@@ -89,9 +94,7 @@ TYPED_TEST(OptionalTest, Initialized) {
     EXPECT_TRUE((bool)opt);
     EXPECT_TRUE(opt.has_value());
 
-    // NOLINTNEXTLINE(bugprone-unchecked-optional-access)
     EXPECT_EQ(opt.value(), val);
-    // NOLINTNEXTLINE(bugprone-unchecked-optional-access)
     EXPECT_EQ(*opt, val);
   }
 }

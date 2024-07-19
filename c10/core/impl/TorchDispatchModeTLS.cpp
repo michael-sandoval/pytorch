@@ -44,8 +44,7 @@ const std::shared_ptr<SafePyObject> TorchDispatchModeTLS::pop_stack() {
              static_cast<size_t>(TorchDispatchModeKey::NUM_MODE_KEYS) - 1;
          i >= 0;
          --i) {
-      if (torchDispatchModeState.infra_modes_[i].has_value()) {
-        // NOLINTNEXTLINE(bugprone-unchecked-optional-access)
+      if (torchDispatchModeState.infra_modes_[i] != c10::nullopt) {
         out = std::move(torchDispatchModeState.infra_modes_[i].value());
         torchDispatchModeState.infra_modes_[i] = c10::nullopt;
         break;
@@ -65,8 +64,7 @@ TorchDispatchModeTLS::pop_highest_infra_mode() {
   for (int64_t i = static_cast<size_t>(TorchDispatchModeKey::NUM_MODE_KEYS) - 1;
        i >= 0;
        --i) {
-    if (torchDispatchModeState.infra_modes_[i].has_value()) {
-      // NOLINTNEXTLINE(bugprone-unchecked-optional-access)
+    if (torchDispatchModeState.infra_modes_[i] != c10::nullopt) {
       auto out_mode = torchDispatchModeState.infra_modes_[i].value();
       torchDispatchModeState.infra_modes_[i] = c10::nullopt;
       if (!any_modes_set()) {
@@ -95,9 +93,8 @@ const std::shared_ptr<SafePyObject>& TorchDispatchModeTLS::get_stack_at(
   auto curr_idx = idx;
   for (const auto i :
        c10::irange(static_cast<size_t>(TorchDispatchModeKey::NUM_MODE_KEYS))) {
-    if (torchDispatchModeState.infra_modes_[i].has_value()) {
+    if (torchDispatchModeState.infra_modes_[i] != c10::nullopt) {
       if (curr_idx == 0) {
-        // NOLINTNEXTLINE(bugprone-unchecked-optional-access)
         return torchDispatchModeState.infra_modes_[i].value();
       }
       curr_idx -= 1;

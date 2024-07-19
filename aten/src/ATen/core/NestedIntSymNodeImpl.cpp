@@ -20,7 +20,6 @@ bool _ge(const char* op, c10::SymNodeImpl* lhs, c10::SymNodeImpl* rhs) {
       }
       TORCH_CHECK(false, "nested int ", op, ": Relation is indeterminate");
     }
-    // NOLINTNEXTLINE(bugprone-unchecked-optional-access)
     if (rhs->constant_int() && *rhs->constant_int() <= 2) {
       return true;
     }

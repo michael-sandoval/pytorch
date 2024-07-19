@@ -296,7 +296,7 @@ inline at::Tensor pack_weight_to_onednn_tensor(
   expected_weight.feed_from(wei);
   auto packed_weight = at::native::new_with_itensor_mkldnn(
       std::move(expected_weight),
-      c10::optTypeMetaToScalarType(weight.options().dtype_opt()),
+      optTypeMetaToScalarType(weight.options().dtype_opt()),
       weight.options().device_opt());
   return packed_weight;
 }

@@ -607,7 +607,7 @@ at::Tensor _qconv_prepack_onednn(
 
   auto packed_weight = at::native::new_with_itensor_mkldnn(
       std::move(exp_wgt),
-      c10::optTypeMetaToScalarType(weight_copy.options().dtype_opt()),
+      optTypeMetaToScalarType(weight_copy.options().dtype_opt()),
       weight_copy.options().device_opt());
 
   return packed_weight;

@@ -25,7 +25,8 @@ PYBIND11_DECLARE_HOLDER_TYPE(T, c10::intrusive_ptr<T>, true);
 PYBIND11_DECLARE_HOLDER_TYPE(T, c10::SingletonOrSharedTypePtr<T>);
 PYBIND11_DECLARE_HOLDER_TYPE(T, c10::SingletonTypePtr<T>, true);
 
-namespace pybind11::detail {
+namespace pybind11 {
+namespace detail {
 
 // torch.Tensor <-> at::Tensor conversions (without unwrapping)
 template <>
@@ -320,7 +321,13 @@ struct type_caster<c10::complex<T>> {
   }
 };
 
-} // namespace pybind11::detail
+// Pybind11 bindings for our optional.
+// http://pybind11.readthedocs.io/en/stable/advanced/cast/stl.html#c-17-library-containers
+template <typename T>
+struct type_caster<c10::optional<T>> : optional_caster<c10::optional<T>> {};
+
+} // namespace detail
+} // namespace pybind11
 
 namespace torch::impl {
 
