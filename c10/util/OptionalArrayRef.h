@@ -45,11 +45,11 @@ class OptionalArrayRef final {
   template <
       typename U = ArrayRef<T>,
       std::enable_if_t<
-          !std::is_same_v<std::decay_t<U>, OptionalArrayRef> &&
-              !std::is_same_v<std::decay_t<U>, std::in_place_t> &&
-              std::is_constructible_v<ArrayRef<T>, U&&> &&
-              std::is_convertible_v<U&&, ArrayRef<T>> &&
-              !std::is_convertible_v<U&&, T>,
+          !std::is_same<std::decay_t<U>, OptionalArrayRef>::value &&
+              !std::is_same<std::decay_t<U>, in_place_t>::value &&
+              std::is_constructible<ArrayRef<T>, U&&>::value &&
+              std::is_convertible<U&&, ArrayRef<T>>::value &&
+              !std::is_convertible<U&&, T>::value,
           bool> = false>
   constexpr OptionalArrayRef(U&& value) noexcept(
       std::is_nothrow_constructible_v<ArrayRef<T>, U&&>)
@@ -58,20 +58,18 @@ class OptionalArrayRef final {
   template <
       typename U = ArrayRef<T>,
       std::enable_if_t<
-          !std::is_same_v<std::decay_t<U>, OptionalArrayRef> &&
-              !std::is_same_v<std::decay_t<U>, std::in_place_t> &&
-              std::is_constructible_v<ArrayRef<T>, U&&> &&
-              !std::is_convertible_v<U&&, ArrayRef<T>>,
+          !std::is_same<std::decay_t<U>, OptionalArrayRef>::value &&
+              !std::is_same<std::decay_t<U>, in_place_t>::value &&
+              std::is_constructible<ArrayRef<T>, U&&>::value &&
+              !std::is_convertible<U&&, ArrayRef<T>>::value,
           bool> = false>
   constexpr explicit OptionalArrayRef(U&& value) noexcept(
       std::is_nothrow_constructible_v<ArrayRef<T>, U&&>)
       : wrapped_opt_array_ref(std::forward<U>(value)) {}
 
   template <typename... Args>
-  constexpr explicit OptionalArrayRef(
-      std::in_place_t ip,
-      Args&&... args) noexcept
-      : wrapped_opt_array_ref(ip, std::forward<Args>(args)...) {}
+  constexpr explicit OptionalArrayRef(in_place_t ip, Args&&... args) noexcept
+      : wrapped_opt_array_ref(ip, args...) {}
 
   template <typename U, typename... Args>
   constexpr explicit OptionalArrayRef(
