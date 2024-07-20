@@ -303,7 +303,7 @@ Tensor FunctionalInverses::_nested_view_from_buffer_inverse(const Tensor& base, 
     return Tensor();
 }
 
-Tensor FunctionalInverses::_nested_view_from_jagged_inverse(const Tensor& base, const Tensor& mutated_view, InverseReturnMode inverse_return_mode, const Tensor& offsets, const Tensor& dummy, const std::optional<Tensor>& lengths, int64_t ragged_idx) {
+Tensor FunctionalInverses::_nested_view_from_jagged_inverse(const Tensor& base, const Tensor& mutated_view, InverseReturnMode inverse_return_mode, const Tensor& offsets, const Tensor& dummy, const c10::optional<Tensor>& lengths, int64_t ragged_idx) {
   auto values = at::_nested_get_values(mutated_view);
   if (inverse_return_mode != InverseReturnMode::NeverView) {
     return values;
@@ -458,7 +458,7 @@ Tensor FunctionalInverses::narrow_inverse(const at::Tensor & base, const at::Ten
     }
 }
 
-Tensor FunctionalInverses::slice_inverse_inverse(const at::Tensor & base, const at::Tensor & mutated_view, InverseReturnMode inverse_return_mode, const at::Tensor & src, int64_t dim, std::optional<c10::SymInt> start, std::optional<c10::SymInt> end, c10::SymInt step) {
+Tensor FunctionalInverses::slice_inverse_inverse(const at::Tensor & base, const at::Tensor & mutated_view, InverseReturnMode inverse_return_mode, const at::Tensor & src, int64_t dim, c10::optional<c10::SymInt> start, c10::optional<c10::SymInt> end, c10::SymInt step) {
     // slice_inverse() inverse is just slice()
     if (inverse_return_mode == InverseReturnMode::NeverView) {
       return at::slice_copy_symint(

@@ -121,7 +121,7 @@ TensorIteratorConfig& TensorIteratorConfig::add_owned_input(const TensorBase& in
 
 TensorIteratorConfig& TensorIteratorConfig::add_owned_const_input(const TensorBase& input) {
   const_tensor_indices_.push_back(tensors_.size());
-  tensors_.push_back(c10::MaybeOwned<TensorBase>::owned(std::in_place, input));
+  tensors_.push_back(c10::MaybeOwned<TensorBase>::owned(c10::in_place, input));
   num_inputs_++;
   return *this;
 }

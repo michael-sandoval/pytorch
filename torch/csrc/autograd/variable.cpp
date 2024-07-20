@@ -878,10 +878,10 @@ at::Tensor ChainedViewFunc::operator()(const at::Tensor& input_base) const {
 }
 
 std::unique_ptr<ViewFunc> ChainedViewFunc::clone_and_set(
-    std::optional<std::vector<c10::SymInt>> symints,
-    std::optional<std::vector<at::Tensor>> tensors) const {
-  std::optional<std::vector<c10::SymInt>> first_symints;
-  std::optional<std::vector<c10::SymInt>> second_symints;
+    c10::optional<std::vector<c10::SymInt>> symints,
+    c10::optional<std::vector<at::Tensor>> tensors) const {
+  c10::optional<std::vector<c10::SymInt>> first_symints;
+  c10::optional<std::vector<c10::SymInt>> second_symints;
   if (symints.has_value()) {
     TORCH_INTERNAL_ASSERT(symints->size() == num_symints());
     first_symints = std::vector<c10::SymInt>(
@@ -890,8 +890,8 @@ std::unique_ptr<ViewFunc> ChainedViewFunc::clone_and_set(
         symints->begin() + first->num_symints(), symints->end());
   }
 
-  std::optional<std::vector<at::Tensor>> first_tensors;
-  std::optional<std::vector<at::Tensor>> second_tensors;
+  c10::optional<std::vector<at::Tensor>> first_tensors;
+  c10::optional<std::vector<at::Tensor>> second_tensors;
   if (tensors.has_value()) {
     TORCH_INTERNAL_ASSERT(tensors->size() == num_tensors());
     first_tensors = std::vector<at::Tensor>(
