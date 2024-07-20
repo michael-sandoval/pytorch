@@ -1981,7 +1981,7 @@ if(USE_KINETO)
 
   if(NOT LIBKINETO_NOROCTRACER)
     if("$ENV{ROCM_SOURCE_DIR}" STREQUAL "")
-      set(ENV{ROCM_SOURCE_DIR} "${ROCM_PATH}")
+      set(ENV{ROCM_SOURCE_DIR} $ENV{ROCM_PATH})
     endif()
   endif()
 
