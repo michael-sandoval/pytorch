@@ -1958,7 +1958,7 @@ if(USE_KINETO)
 
   if(NOT LIBKINETO_NOROCTRACER)
     if(NOT ENV{ROCM_SOURCE_DIR})
-      set(ENV{ROCM_SOURCE_DIR} "/opt/rocm")
+      set(ENV{ROCM_SOURCE_DIR} $ENV{ROCM_PATH})
     endif()
   endif()
 
