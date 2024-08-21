@@ -298,20 +298,6 @@ mha_fwd(const at::Tensor &q,         // batch_size x seqlen_q x num_heads x head
     softmax_fa_t = at::empty({ 0, 0, 0, 0 }, at::dtype(q.dtype()).device(q.device()));
   }
 
-  hipError_t err; // TODO: Error handling
-  using aotriton::v2::flash::attn_fwd;
-  err = attn_fwd(mk_aotensor(q_t, "q"),
-                 mk_aotensor(k_t, "k"),
-                 mk_aotensor(v_t, "v"),
-                 softmax_scale,
-                 mk_aotensor<2>(M, "M"),
-                 mk_aotensor(output_t, "Out"),
-                 p_dropout,
-                 philox_args.seed_.val,
-                 philox_args.offset_.val,
-                 mk_aotensor(softmax_fa_t, "encoded_softmax"),
-                 is_causal,
-                 stream);
 
   return {out, q_padded, k_padded, v_padded, M, seed_t, offset_t, softmax_fa_t};
 }
@@ -492,26 +478,6 @@ mha_bwd(const at::Tensor &dout,  // batch_size x seqlen_q x num_heads, x head_si
   at::Tensor delta = at::empty_like(softmax_lse).contiguous();
 
   int d_head = head_size_og;
-  hipError_t err; // TODO: Error handling
-  {
-    using aotriton::v2::flash::attn_bwd;
-    err = attn_bwd(mk_aotensor(q_t, "q"),
-                   mk_aotensor(k_t, "k"),
-                   mk_aotensor(v_t, "v"),
-                   softmax_scale,
-                   mk_aotensor(out_t, "out"),
-                   mk_aotensor(dout_t, "dout"),
-                   mk_aotensor(dq_t, "dq"),
-                   mk_aotensor(dk_t, "dk"),
-                   mk_aotensor(dv_t, "dv"),
-                   mk_aotensor<2>(softmax_lse_cont, "L"),
-                   mk_aotensor<2>(delta, "delta"),
-                   p_dropout,
-                   philox_args.seed_.val,
-                   philox_args.offset_.val,
-                   is_causal,
-                   stream);
-  }
 
   // For MQA/GQA we need to sum dK and dV across the groups
   if (num_heads_k != num_heads) {
