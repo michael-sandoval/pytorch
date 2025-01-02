@@ -1089,7 +1089,7 @@ if(USE_ROCM)
     endif()
 
     # needed for compat with newer versions of hip-clang that introduced C++20 mangling rules
-    list(APPEND HIP_HIPCC_FLAGS -fclang-abi-compat=17)
+    #list(APPEND HIP_HIPCC_FLAGS -fclang-abi-compat=17)
 
     set(HIP_CLANG_FLAGS ${HIP_CXX_FLAGS})
     # Ask hcc to generate device code during compilation so we can use
@@ -1667,7 +1667,7 @@ if(USE_KINETO)
 
   if(NOT LIBKINETO_NOROCTRACER)
     if("$ENV{ROCM_SOURCE_DIR}" STREQUAL "")
-      set(ENV{ROCM_SOURCE_DIR} "/opt/rocm")
+      set(ENV{ROCM_SOURCE_DIR} $ENV{ROCM_PATH})
     endif()
   endif()
 
